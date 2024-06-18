@@ -4,6 +4,11 @@ public class Telefono {
     private String numero;
     private String compania;
 
+    public Telefono(String numero, String compania) {
+        this.numero = numero;
+        this.compania = compania;
+    }
+
     public String getNumero() {
         return numero;
     }

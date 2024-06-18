@@ -2,9 +2,11 @@ package Vista;
 
 import Controlador.ContactoControlador;
 import Modelo.Contacto;
+import Modelo.Telefono;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -308,7 +310,12 @@ public class Consultar extends javax.swing.JFrame {
             String nombre = contacto.getNombre();
             String apellido = contacto.getApellido();
             String email = contacto.getEmail();
-            String telefonos = String.join(", ", contacto.getTelefonos());
+            List<Telefono> listaTel = contacto.getListaTel();
+            List<String> numeros = listaTel.stream()
+                                           .map(Telefono::getNumero)
+                                           .collect(Collectors.toList());
+
+            String telefonos = String.join(", ", numeros);
             modelo.addRow(new Object[]{nombre, apellido, email, telefonos});
         }
     }
@@ -322,7 +329,12 @@ public class Consultar extends javax.swing.JFrame {
             String nombre = contacto.getNombre();
             String apellido = contacto.getApellido();
             String email = contacto.getEmail();
-            String telefonos = String.join(", ", contacto.getTelefonos());
+            List<Telefono> listaTel = contacto.getListaTel();
+            List<String> numeros = listaTel.stream()
+                                           .map(Telefono::getNumero)
+                                           .collect(Collectors.toList());
+
+            String telefonos = String.join(", ", numeros);
             modelo.addRow(new Object[]{nombre, apellido, email, telefonos});
         }
     }

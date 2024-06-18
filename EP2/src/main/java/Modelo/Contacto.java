@@ -9,7 +9,7 @@ public class Contacto {
     private String apellido;
     private String email;
     private String foto;
-    private List<String> telefonos;
+    private List<Telefono> listaTel;
 
     public Contacto(int id, String nombre, String apellido, String email, String foto) {
         this.id = id;
@@ -17,17 +17,17 @@ public class Contacto {
         this.apellido = apellido;
         this.email = email;
         this.foto = foto;
-        this.telefonos = new ArrayList<>();
+        this.listaTel = new ArrayList<>();
+    }
+
+    public void agregarTel(Telefono tel){
+        this.listaTel.add(tel);
     }
     
-    public void agregarTelefono(String telefono) {
-        this.telefonos.add(telefono);
+    public void eliminarTel(Telefono tel){
+        this.listaTel.remove(tel);
     }
-
-    public void eliminarTelefono(String telefono) {
-        this.telefonos.remove(telefono);
-    }
-
+    
     public int getId() {
         return id;
     }
@@ -68,12 +68,12 @@ public class Contacto {
         this.foto = foto;
     }
 
-    public List<String> getTelefonos() {
-        return telefonos;
+    public List<Telefono> getListaTel() {
+        return listaTel;
     }
 
-    public void setTelefonos(List<String> telefonos) {
-        this.telefonos = telefonos;
+    public void setListaTel(List<Telefono> listaTel) {
+        this.listaTel = listaTel;
     }
     
 }
