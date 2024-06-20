@@ -6,6 +6,8 @@ import Modelo.Telefono;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -389,11 +391,15 @@ public class Modificar extends javax.swing.JFrame {
             
             if (contacto != null) {
                 
-                controlador.modificarContacto(contacto.getId(), nombreField.getText(), apellidoField.getText(), correoField.getText(), imagenField.getText(), tel1Field.getText(), tel2Field.getText(), tel3Field.getText(), com1Field.getText(), com2Field.getText(), com3Field.getText());
+                try {
+                    controlador.modificarContacto(contacto.getId(), nombreField.getText(), apellidoField.getText(), correoField.getText(), imagenField.getText(), tel1Field.getText(), tel2Field.getText(), tel3Field.getText(), com1Field.getText(), com2Field.getText(), com3Field.getText());
+                    imagenLabel.setIcon(null);
+                    cargarDatosEnTabla(); // Actualizar la tabla después de eliminar
+                    JOptionPane.showMessageDialog(this, "Contacto modificado.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 
-                imagenLabel.setIcon(null);
-                cargarDatosEnTabla(); // Actualizar la tabla después de eliminar
-                JOptionPane.showMessageDialog(this, "Contacto modificado.");
             }
         }
     }//GEN-LAST:event_modificarBotonActionPerformed
