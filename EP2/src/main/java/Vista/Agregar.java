@@ -1,6 +1,8 @@
 package Vista;
 
 import Controlador.ContactoControlador;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class Agregar extends javax.swing.JFrame {
@@ -290,46 +292,32 @@ public class Agregar extends javax.swing.JFrame {
         String com2 = com2Field.getText();
         String com3 = com3Field.getText();
 
-        // Verificar que los campos no estén vacíos
-        if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || imagen.isEmpty() || telefono1.isEmpty() && telefono2.isEmpty() && telefono3.isEmpty() || com1.isEmpty() && com2.isEmpty() && com3.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Validar que el teléfono tenga 10 caracteres
-        if (telefono1.length() != 10 && !telefono1.isEmpty() || telefono2.length() != 10 && !telefono2.isEmpty()|| telefono3.length() != 10 && !telefono3.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El teléfono debe tener 10 caracteres", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        //JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos", "Error", JOptionPane.ERROR_MESSAGE);
         
-        if (!telefono1.isEmpty() && com1.isEmpty() || !telefono2.isEmpty() && com2.isEmpty() || !telefono3.isEmpty() && com3.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Falta ingresar la compañía", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        if (telefono1.isEmpty() && !com1.isEmpty() || telefono2.isEmpty() && !com2.isEmpty() || telefono3.isEmpty() && !com3.isEmpty()){
-            JOptionPane.showMessageDialog(this, "Falta ingresar el número", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
 
         // Enviar los datos al controlador
         int nuevoId = controlador.siguienteId(); // Método para obtener el próximo ID
-        controlador.agregarContacto(nuevoId, nombre, apellido, correo, imagen, telefono1, telefono2, telefono3, com1, com2, com3);
+        try {
+            controlador.agregarContacto(nuevoId, nombre, apellido, correo, imagen, telefono1, telefono2, telefono3, com1, com2, com3);
+            // Mostrar mensaje de confirmación
+            JOptionPane.showMessageDialog(this, "Contacto Agregado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-        // Mostrar mensaje de confirmación
-        JOptionPane.showMessageDialog(this, "Contacto Agregado", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            // Limpiar los campos
+            nombreField.setText("");
+            apellidoField.setText("");
+            correoField.setText("");
+            tel1Field.setText("");
+            tel2Field.setText("");
+            tel3Field.setText("");
+            imagenField.setText("");
+            com1Field.setText("");
+            com2Field.setText("");
+            com3Field.setText("");
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
-        // Limpiar los campos
-        nombreField.setText("");
-        apellidoField.setText("");
-        correoField.setText("");
-        tel1Field.setText("");
-        tel2Field.setText("");
-        tel3Field.setText("");
-        imagenField.setText("");
-        com1Field.setText("");
-        com2Field.setText("");
-        com3Field.setText("");
     }
     
     private void nombreFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreFieldActionPerformed

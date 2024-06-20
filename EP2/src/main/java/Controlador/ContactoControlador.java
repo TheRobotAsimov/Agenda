@@ -48,22 +48,19 @@ public class ContactoControlador {
     }
 
     // Métodos para agregar, buscar, eliminar y modificar contactos
-    public void agregarContacto(int id, String nombre, String apellido, String correo, String foto, String tel1, String tel2, String tel3, String com1, String com2, String com3) {
+    public void agregarContacto(int id, String nombre, String apellido, String correo, String foto, String tel1, String tel2, String tel3, String com1, String com2, String com3) throws Exception {
+        
+        validarContacto(nombre, apellido, correo, tel1, tel2, tel3, com1, com2, com3);
+        
+        if(foto.isEmpty()){
+            foto = "./src/main/java/Imagenes/default.jpg";
+        }
         
         Contacto nuevoContacto = new Contacto(id, nombre, apellido, correo, foto);
         
-        if(!tel1.isEmpty()){
-            Telefono nuevoTel1 = new Telefono(tel1, com1);
-            nuevoContacto.agregarTel(nuevoTel1);
-        }
-        if(!tel2.isEmpty()){
-            Telefono nuevoTel2 = new Telefono(tel2, com2);
-            nuevoContacto.agregarTel(nuevoTel2);
-        }
-        if(!tel3.isEmpty()){
-            Telefono nuevoTel3 = new Telefono(tel3, com3);
-            nuevoContacto.agregarTel(nuevoTel3);
-        }
+        TelefonoControlador telControlador = new TelefonoControlador();
+        
+        nuevoContacto.setListaTel(telControlador.crearListaTelefonos(tel1, tel2, tel3, com1, com2, com3));
         
         contactos.add(nuevoContacto);
     }
@@ -78,22 +75,14 @@ public class ContactoControlador {
                 contacto.setNombre(nombre);
                 contacto.setApellido(apellido);
                 contacto.setEmail(email);
+                if(foto.isEmpty()){
+                    foto = "./src/main/java/Imagenes/default.jpg";
+                }
                 contacto.setFoto(foto);
-                List<Telefono> ts = new ArrayList<>();
-                if(!tel1.isEmpty()){
-                    Telefono t1 = new Telefono(tel1, com1);
-                    ts.add(t1);
-                }
-                if(!tel2.isEmpty()){
-                    Telefono t2 = new Telefono(tel2, com2);
-                    ts.add(t2);
-                }
-                if(!tel3.isEmpty()){
-                    Telefono t3 = new Telefono(tel3, com3);
-                    ts.add(t3);
-                }
                 
-                contacto.setListaTel(ts);
+                TelefonoControlador telControlador = new TelefonoControlador();
+
+                contacto.setListaTel(telControlador.crearListaTelefonos(tel1, tel2, tel3, com1, com2, com3));
                 
                 break;
             }
@@ -105,7 +94,59 @@ public class ContactoControlador {
     }
     
     // Validaciones y búsquedas
+    
+    public void validarContacto(String nombre, String apellido, String correo, String tel1, String tel2, String tel3, String com1, String com2, String com3) throws Exception{
+        
+        if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty()){
+            throw new Exception("Faltan campos por llenar");
+        }
+        
+        if(validarNombre(nombre) == 1){
+            throw new Exception("No se permiten caracteres especiales en el nombre");
+        }
+        if(validarNombre(apellido) == 1){
+            throw new Exception("No se permiten caracteres especiales en el apellido");
+        }
+        if(validarCorreo(correo) == 1){
+            throw new Exception("Formato invalido para el correo");
+        }
+        
+        if(buscarContactoPorCorreo(correo) != null){
+            throw new Exception("Ese correo ya se encuentra registrado");
+        }
+        
+        if(!tel1.isEmpty() && buscarContactoPorTelefono(tel1) != null){
+            throw new Exception("El telefono "+tel1+" ya se encuentra registrado");
+        }
+        if(!tel2.isEmpty() && buscarContactoPorTelefono(tel2) != null){
+            throw new Exception("El telefono "+tel2+" ya se encuentra registrado");
+        }
+        if(!tel3.isEmpty() && buscarContactoPorTelefono(tel3) != null){
+            throw new Exception("El telefono "+tel3+" ya se encuentra registrado");
+        }
+        
+        TelefonoControlador telControlador = new TelefonoControlador();
+        
+        telControlador.validarTelefonos(tel1, tel2, tel3, com1, com2, com3);
+    }
+    
+    public int validarNombre(String nombre){
+        if(!nombre.matches("^[a-zA-Z]+$")){
+            return 1;
+        }
+        return 0;
+    }
 
+    public int validarCorreo(String correo){
+        if(!correo.contains("@") || !correo.contains(".")){
+            return 1;
+        }
+        
+        return 0;
+    }
+    
+    
+    
     public List<Contacto> buscarContactoPorNombre(String nombre) {
         return contactos.stream()
                 .filter(contacto -> contacto.getNombre().equalsIgnoreCase(nombre))
