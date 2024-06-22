@@ -114,9 +114,11 @@ public class ContactoControlador {
             throw new Exception("No se permiten caracteres especiales en el apellido");
         }
         if(validarCorreo(correo) == 1){
+            throw new Exception("Falta un @ y/o un .");
+        }
+        if(validarCorreo(correo) == 2){
             throw new Exception("Formato invalido para el correo");
         }
-        
         
         TelefonoControlador telControlador = new TelefonoControlador();
         
@@ -168,6 +170,9 @@ public class ContactoControlador {
     public int validarCorreo(String correo){
         if(!correo.contains("@") || !correo.contains(".")){
             return 1;
+        }
+        if(!correo.matches("[-\\w\\.]+@\\w+\\.\\w+")){
+            return 2;
         }
         
         return 0;
