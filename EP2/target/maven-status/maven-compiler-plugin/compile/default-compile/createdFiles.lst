@@ -22,7 +22,9 @@ Modelo\Telefono.class
 Vista\Consultar$1.class
 Vista\Consultar$3.class
 Vista\Modificar.class
+Vista\Modificar$8.class
 Vista\Pantalla$3.class
+Vista\Agregar$5.class
 Vista\Consultar.class
 Main\Main.class
 Vista\Agregar.class
